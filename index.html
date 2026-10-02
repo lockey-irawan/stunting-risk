@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulator CF Risiko Stunting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Simulator certainty factor risiko stunting balita</h1>
+    <p>Model CF berjenjang: bobot pakar awal dari literatur, kombinasi dalam klaster dengan faktor korelasi β, atenuasi jalur mediasi α, lalu kombinasi antarklaster. Nilai default adalah usulan sebelum validasi lapangan dan bisa diubah di bagian parameter.</p>
+    <div class="presets" id="presets"><span>Muat contoh:</span></div>
+  </header>
+
+  <div class="layout">
+    <main id="form" aria-label="Kuesioner faktor risiko"></main>
+
+    <aside class="result" aria-live="polite">
+      <div class="panel">
+        <div class="meter">
+          <svg id="gauge" viewBox="0 0 88 300" role="img" aria-label="Papan ukur nilai CF"></svg>
+          <div class="score">
+            <div class="num" id="num">0,00</div>
+            <span class="cat kosong" id="cat">Belum ada bukti</span>
+            <p>CF standar tanpa klaster: <b id="naive">0,00</b><br>Selisih menunjukkan efek koreksi β dan α.</p>
+          </div>
+        </div>
+        <div class="bars"><h3>CF per klaster</h3><div id="bars"></div></div>
+        <div class="contrib"><h3>Kontribusi faktor (uji hapus-satu)</h3><div id="contrib"></div></div>
+        <details>
+          <summary>Jejak perhitungan</summary>
+          <div class="trace" id="trace"></div>
+        </details>
+        <details>
+          <summary>Catat ke log uji</summary>
+          <div class="log-row">
+            <input id="logLabel" placeholder="Label kasus, mis. Posyandu A-07" aria-label="Label kasus">
+            <select id="logActual" aria-label="Status aktual">
+              <option value="">Status aktual belum diketahui</option>
+              <option value="stunted">Aktual: stunted</option>
+              <option value="normal">Aktual: tidak stunted</option>
+            </select>
+            <button class="btn primary" id="logAdd" type="button">Catat</button>
+          </div>
+          <p class="note">Status aktual dipakai nanti untuk kalibrasi ambang (ROC). Log tersimpan di peramban ini saja.</p>
+        </details>
+      </div>
+    </aside>
+  </div>
+
+  <section class="section" aria-labelledby="ph">
+    <h2 id="ph">Parameter model</h2>
+    <p>CF rule = MB − MD dari pakar. β mengatur tumpang tindih faktor dalam satu klaster (1 = independen, 0 = hanya nilai terbesar). α adalah porsi efek langsung yang tersisa saat faktor perantaranya sudah diketahui.</p>
+    <div class="param-grid" id="params"></div>
+    <div class="presets"><button class="btn" id="resetParams" type="button">Kembalikan nilai awal</button></div>
+  </section>
+
+  <section class="section" aria-labelledby="lh">
+    <h2 id="lh">Log uji</h2>
+    <p>Setiap baris menyimpan jawaban (bobot keyakinan pengguna), CF tiap klaster, CF total, kategori, dan status aktual.</p>
+    <div class="table-wrap"><table id="logTable"></table></div>
+    <div class="presets">
+      <button class="btn" id="dlCsv" type="button">Unduh log (CSV)</button>
+      <button class="btn" id="clearLog" type="button">Hapus log</button>
+      <span id="dlMsg"></span>
+    </div>
+  </section>
+</div>
+
+<script src="js/cf-engine.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
